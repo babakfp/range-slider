@@ -1,0 +1,45 @@
+.range-slider,
+.range-slider__rail,
+.range-slider__rail-fill {
+  height: 6px;
+  border-radius: 6px;
+}
+
+.range-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 14px;
+  margin-bottom: 14px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  touch-action: none;
+}
+
+.range-slider__rail {
+  position: absolute;
+  width: 100%;
+  background: #e9e9e9;
+}
+
+.range-slider__rail-fill {
+  position: absolute;
+  background: gray;
+}
+
+.range-slider__handle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .2);
+  touch-action: pan-x;
+
+  &--active {
+    box-shadow: 0 0 0 5px gray;
+  }
+}
