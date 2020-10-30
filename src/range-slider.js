@@ -27,7 +27,7 @@ class RangeSlider {
 		};
 
 		// contains the DOM elements for the slider
-		this.UI = {
+		this.ui = {
 			slider: null,
 			handleLeft: null,
 			handleRight: null,
@@ -37,40 +37,40 @@ class RangeSlider {
 		// slider element
 		const sliderElem = document.createElement('div');
     sliderElem.className = 'range-slider';
-		this.UI.slider = sliderElem;
+		this.ui.slider = sliderElem;
 
 		// rail element
 		const rail = document.createElement('div');
 		rail.className = 'range-slider__rail';
-		this.UI.rail = rail;
-		this.UI.slider.appendChild(this.UI.rail);
+		this.ui.rail = rail;
+		this.ui.slider.appendChild(this.ui.rail);
 
 		// left handle
 		const handleLeft = document.createElement('div');
 		handleLeft.className = 'range-slider__handle range-slider__handle--left';
-		this.UI.handleLeft = handleLeft;
-		this.UI.slider.appendChild(this.UI.handleLeft);
+		this.ui.handleLeft = handleLeft;
+		this.ui.slider.appendChild(this.ui.handleLeft);
 
 		// right handle
 		const handleRight = document.createElement('div');
 		handleRight.className = 'range-slider__handle range-slider__handle--right';
-		this.UI.handleRight = handleRight;
-		this.UI.slider.appendChild(this.UI.handleRight);
+		this.ui.handleRight = handleRight;
+		this.ui.slider.appendChild(this.ui.handleRight);
 
 		// filled rill element
 		const filledRail = document.createElement('div');
 		filledRail.className = 'range-slider__filled-rail';
-		this.UI.filledRail = filledRail;
-		this.UI.slider.appendChild(this.UI.filledRail);
+		this.ui.filledRail = filledRail;
+		this.ui.slider.appendChild(this.ui.filledRail);
 
-		elementContainer.appendChild(this.UI.slider);
+		elementContainer.appendChild(this.ui.slider);
 
 
 		// move handles to have it's center as the end pointer point -> babakfp
-		this.UI.handleLeft.style.marginLeft = '-' + (handleLeft.offsetWidth / 2) + 'px';
-		this.UI.handleLeft.style.left = '0';
-		this.UI.handleRight.style.marginRight = '-' + (handleRight.offsetWidth / 2) + 'px';
-		this.UI.handleRight.style.right = '0';
+		this.ui.handleLeft.style.marginLeft = '-' + (handleLeft.offsetWidth / 2) + 'px';
+		this.ui.handleLeft.style.left = '0';
+		this.ui.handleRight.style.marginRight = '-' + (handleRight.offsetWidth / 2) + 'px';
+		this.ui.handleRight.style.right = '0';
 
 
 		// push elements to starting positions
@@ -82,14 +82,13 @@ class RangeSlider {
 
 		// bind events to start listening
 		this.startingHandler = this.starting.bind(this);
-		this.UI.handleLeft.onmousedown = this.startingHandler;
-		this.UI.handleLeft.ontouchstart = this.startingHandler;
-		this.UI.handleRight.onmousedown = this.startingHandler;
-		this.UI.handleRight.ontouchstart = this.startingHandler;
+		this.ui.handleLeft.onmousedown = this.startingHandler;
+		this.ui.handleLeft.ontouchstart = this.startingHandler;
+		this.ui.handleRight.onmousedown = this.startingHandler;
+		this.ui.handleRight.ontouchstart = this.startingHandler;
 	}
 
 	/* default config
-	 * isoneway (boolean denotes if slider only has one handle)
 	 * overlap (boolean denotes if handles will overlap or just sit next to each other)
 	 */
 	get defaultOptions() {
@@ -166,8 +165,8 @@ class RangeSlider {
 	getInfo() {
 		let info = {};
 		const total = this.options.max - this.options.min;
-		const left = this.UI.filledRail.style.left ? parseFloat(this.UI.filledRail.style.left.replace('%', '')) : 0;
-		const right = this.UI.filledRail.style.right ? parseFloat(this.UI.filledRail.style.right.replace('%', '')) : 0;
+		const left = this.ui.filledRail.style.left ? parseFloat(this.ui.filledRail.style.left.replace('%', '')) : 0;
+		const right = this.ui.filledRail.style.right ? parseFloat(this.ui.filledRail.style.right.replace('%', '')) : 0;
 
 
 		info = {
@@ -241,8 +240,8 @@ class RangeSlider {
 
 		// update element's positioning for z-index
 		// the element last moved will have a higher positioning
-		this.UI.handleLeft.classList.remove('range-slider__handle--active');
-		this.UI.handleRight.classList.remove('range-slider__handle--active');
+		this.ui.handleLeft.classList.remove('range-slider__handle--active');
+		this.ui.handleRight.classList.remove('range-slider__handle--active');
 		this.dragObj.elNode.classList.add('range-slider__handle--active');
 
 		// capture mousemove and mouseup events on the page
@@ -255,9 +254,9 @@ class RangeSlider {
 
 		// stop default events
 		this.stopDefault.bind(this)(event);
-		this.UI.filledRail.classList.remove('slider-transition');
-		this.UI.handleLeft.classList.remove('slider-transition');
-		this.UI.handleRight.classList.remove('slider-transition');
+		this.ui.filledRail.classList.remove('slider-transition');
+		this.ui.handleLeft.classList.remove('slider-transition');
+		this.ui.handleRight.classList.remove('slider-transition');
 
 		// pub/sub lifecycle - start
 		this.publish('start', this.getInfo());
@@ -271,7 +270,7 @@ class RangeSlider {
 
 
 		// move drag element by the same amount the cursor has moved
-		const sliderWidth = this.UI.slider.offsetWidth;
+		const sliderWidth = this.ui.slider.offsetWidth;
 		let calculatedVal = 0;
 		if (this.dragObj.dir === 'left') {
 			calculatedVal = this.dragObj.elStartLeft + ((x - this.dragObj.cursorStartX) / sliderWidth * 100);
@@ -293,27 +292,27 @@ class RangeSlider {
 		// take into account the handle when calculating space left
 		let handleOffset = 0;
 		if (!this.options.overlap) {
-			handleOffset = (this.UI.handleRight.offsetWidth / this.UI.slider.offsetWidth) * 100;
+			handleOffset = (this.ui.handleRight.offsetWidth / this.ui.slider.offsetWidth) * 100;
 		}
 
 		// add movement based on handle direction
 		let remaining = 0;
 		if (this.dragObj.dir === 'left') {
-			remaining = (100 - handleOffset) - this.UI.filledRail.style.right.replace('%', '');
+			remaining = (100 - handleOffset) - this.ui.filledRail.style.right.replace('%', '');
 			if (remaining <= calculatedVal) {
 				calculatedVal = remaining;
 			}
 
 			this.dragObj.elNode.style.left = calculatedVal + '%';
-			this.UI.filledRail.style.left = calculatedVal + '%';
+			this.ui.filledRail.style.left = calculatedVal + '%';
 		} else {
-			remaining = (100 - handleOffset) - this.UI.filledRail.style.left.replace('%', '');
+			remaining = (100 - handleOffset) - this.ui.filledRail.style.left.replace('%', '');
 			if (remaining <= calculatedVal) {
 				calculatedVal = remaining;
 			}
 
 			this.dragObj.elNode.style.right = calculatedVal + '%';
-			this.UI.filledRail.style.right = calculatedVal + '%';
+			this.ui.filledRail.style.right = calculatedVal + '%';
 		}
 
 		// stop default events
@@ -343,9 +342,9 @@ class RangeSlider {
 		let importedData = data;
 
 		// transition effects (cleaned up at rangeslider.prototype.starting);
-		this.UI.filledRail.classList.add('slider-transition');
-		this.UI.handleLeft.classList.add('slider-transition');
-		this.UI.handleRight.classList.add('slider-transition');
+		this.ui.filledRail.classList.add('slider-transition');
+		this.ui.handleLeft.classList.add('slider-transition');
+		this.ui.handleRight.classList.add('slider-transition');
 
 		const total = this.options.max - this.options.min;
 
@@ -357,8 +356,8 @@ class RangeSlider {
 				if (importedData.left > this.options.max) importedData.left = this.options.max;
 
 				const posLeft = (importedData.left - this.options.min) / total * 100;
-				this.UI.handleLeft.style.left = posLeft + '%';
-				this.UI.filledRail.style.left = posLeft + '%';
+				this.ui.handleLeft.style.left = posLeft + '%';
+				this.ui.filledRail.style.left = posLeft + '%';
 			}
 
 			if (importedData.right) {
@@ -366,17 +365,17 @@ class RangeSlider {
 				if (importedData.right > this.options.max) importedData.right = this.options.max;
 
 				const posRight = (this.options.max - importedData.right) / total * 100;
-				this.UI.handleRight.style.right = posRight + '%';
-				this.UI.filledRail.style.right = posRight + '%';
+				this.ui.handleRight.style.right = posRight + '%';
+				this.ui.filledRail.style.right = posRight + '%';
 			}
 
 			// if overlap is not enabled then check if the starting positions are overlapping - reset to full
-			if (!this.options.overlap && this.UI.handleLeft.offsetLeft + this.UI.handleLeft.offsetWidth >
-				this.UI.handleRight.offsetLeft - 1) {
-				this.UI.filledRail.style.left = '0%';
-				this.UI.filledRail.style.right = '0%';
-				this.UI.handleLeft.style.left = '0%';
-				this.UI.handleRight.style.right = '0%';
+			if (!this.options.overlap && this.ui.handleLeft.offsetLeft + this.ui.handleLeft.offsetWidth >
+				this.ui.handleRight.offsetLeft - 1) {
+				this.ui.filledRail.style.left = '0%';
+				this.ui.filledRail.style.right = '0%';
+				this.ui.handleLeft.style.left = '0%';
+				this.ui.handleRight.style.right = '0%';
 			}
 
 		} else if (!isNaN(importedData)) {
@@ -385,9 +384,9 @@ class RangeSlider {
 			if (importedData > this.options.max) importedData = this.options.max;
 
 			const pos = (importedData - this.options.min) / total * 100;
-			this.UI.handleLeft.style.left = pos + '%';
-			this.UI.filledRail.style.left = '0%';
-			this.UI.filledRail.style.right = (100 - pos) + '%';
+			this.ui.handleLeft.style.left = pos + '%';
+			this.ui.filledRail.style.left = '0%';
+			this.ui.filledRail.style.right = (100 - pos) + '%';
 		}
 
 		// pub/sub lifecycle - moving
@@ -407,9 +406,9 @@ class RangeSlider {
 	disable(boolean) {
 		this.isDisabled = boolean;
 		if (this.isDisabled) {
-			this.UI.slider.classList.add('slider-disabled');
+			this.ui.slider.classList.add('slider-disabled');
 		} else {
-			this.UI.slider.classList.remove('slider-disabled');
+			this.ui.slider.classList.remove('slider-disabled');
 		}
 	}
 
